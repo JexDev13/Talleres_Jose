@@ -5,6 +5,7 @@ package Logica;
 public class Talleres_Jose {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Conexion con = new Conexion();
+        con.conectar();
     }
 }
