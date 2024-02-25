@@ -47,6 +47,11 @@ public class Log extends javax.swing.JFrame {
         jLPass.setText("Contraseña:");
 
         jBIngreso.setText("Ingresar");
+        jBIngreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBIngresoActionPerformed(evt);
+            }
+        });
 
         jBCancelar.setText("Cancelar");
 
@@ -108,6 +113,10 @@ public class Log extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIngresoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBIngresoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
