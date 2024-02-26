@@ -66,6 +66,11 @@ public class Menu extends javax.swing.JFrame {
         });
 
         jBClientes.setText("Clientes");
+        jBClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBClientesActionPerformed(evt);
+            }
+        });
 
         jBSalir.setText("Cerrar Sesión");
         jBSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -170,6 +175,12 @@ public class Menu extends javax.swing.JFrame {
         rep.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jBVehiculosActionPerformed
+
+    private void jBClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBClientesActionPerformed
+        Clientes cli = new Clientes(this.sede);
+        cli.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jBClientesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBClientes;
