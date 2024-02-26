@@ -54,6 +54,11 @@ public class Menu extends javax.swing.JFrame {
         jBVehiculos.setText("Reparaciones");
 
         jBReparaciones.setText("Vehículos");
+        jBReparaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBReparacionesActionPerformed(evt);
+            }
+        });
 
         jBClientes.setText("Clientes");
 
@@ -148,6 +153,12 @@ public class Menu extends javax.swing.JFrame {
         emp.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jBEmpleadosActionPerformed
+
+    private void jBReparacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBReparacionesActionPerformed
+        AutomovilMatriculas auto = new AutomovilMatriculas(this.sede);
+        auto.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jBReparacionesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBClientes;
