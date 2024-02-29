@@ -1,9 +1,14 @@
 package GUI;
 
+import Logica.Conexion;
+import javax.swing.JOptionPane;
+
 /*
  * @author JEREMY
  */
 public class Log extends javax.swing.JFrame {
+
+    Conexion con = new Conexion();
 
     /**
      * Creates new form Log
@@ -138,17 +143,27 @@ public class Log extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBIngresoActionPerformed
-        this.setVisible(false);
-        int opc = this.jCBTaller.getSelectedIndex();
-        String sede;
-        if(opc == 0){
-            sede = "Quito";
+
+        String user = this.jTUser.getText();
+        String pass = this.jPFPass.getText();
+        
+        if (con.ingresar(user, pass)) {
+            this.setVisible(false);
+            int opc = this.jCBTaller.getSelectedIndex();
+            String sede;
+            if (opc == 0) {
+                sede = "Quito";
+            } else {
+                sede = "Guayaquil";
+            }
+            Menu menu = new Menu(sede);
+            menu.setVisible(true);
+            System.out.println(sede);
         }else{
-            sede = "Guayaquil";
+            JOptionPane.showMessageDialog(null, "Error al iniciar sesión ", "Error", JOptionPane.INFORMATION_MESSAGE);
         }
-        Menu menu = new Menu(sede);
-        menu.setVisible(true);
-        System.out.println(sede);
+
+
     }//GEN-LAST:event_jBIngresoActionPerformed
 
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed
