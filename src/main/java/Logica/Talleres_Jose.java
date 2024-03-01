@@ -1,6 +1,6 @@
 package Logica;
 
-import GUI.Log;
+import GUI.Login;
 
 /*
  * @author JEREMY
@@ -8,7 +8,7 @@ import GUI.Log;
 public class Talleres_Jose {
 
     public static void main(String[] args) {
-        Log log = new Log();
+        Login log = new Login();
         log.setVisible(true);
     }
 }

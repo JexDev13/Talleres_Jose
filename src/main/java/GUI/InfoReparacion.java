@@ -54,7 +54,7 @@ public class InfoReparacion extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel1.setText("Info reparación");
 
-        jLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\Isma2\\Documents\\NetBeansProjects\\Talleres_Jose\\src\\main\\java\\Img\\LogoTaller100.jpg")); // NOI18N
+        jLogo.setIcon(new javax.swing.ImageIcon("C:\\Users\\carla\\Downloads\\Img\\Img\\LogoTaller100.jpg")); // NOI18N
         jLogo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setText("Sede:");
@@ -127,7 +127,7 @@ public class InfoReparacion extends javax.swing.JFrame {
                                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                         .addGap(174, 174, 174))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()

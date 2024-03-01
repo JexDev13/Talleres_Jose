@@ -5,8 +5,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpinnerListModel;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -18,9 +23,9 @@ public class Conexion {
     Statement st;
     ResultSet rs;
 
-    String usr;
-    String pass; //Cambiar a P@ssW0rd
-    String bd = "LocalPrueba";
+    String usr = "sa";
+    String pass = "root"; //Cambiar a P@ssW0rd
+    String bd = "TALLER_QUITO";
     String port = "1433";
     String conString = "jdbc:sqlserver://localhost:" + port + ";databaseName=" + bd + ";encrypt=true;trustServerCertificate=true;";
 
@@ -47,18 +52,12 @@ public class Conexion {
         }
     }
 
-    public void setUsr(String usr) {
-        this.usr = usr;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
-    }
-    
-    public boolean ingresar(String usr, String pass){
-        this.usr = usr;
-        this.pass = pass;
-        return conectar()!= null;
+    //Login
+    public boolean ingresar(String nodo, String usr, String pass) {
+        if (nodo.equalsIgnoreCase(this.bd) && usr.equalsIgnoreCase(this.usr) && pass.equalsIgnoreCase(this.pass)) {
+            return conectar() != null;
+        }
+        return false;
     }
 
     //Presentar tablas
@@ -83,10 +82,216 @@ public class Conexion {
                 jTabla.setModel(tabla);
             }
 
+            if (selectTabla.equals("reparaciones")) {
+                Object[] reparacion = new Object[5];
+                DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"Id", "Matricula", "Tipo", "Precio", "Fecha"});
+                while (rs.next()) {
+                    reparacion[0] = rs.getInt("id_reparacion");
+                    reparacion[1] = rs.getString("matricula");
+                    reparacion[2] = rs.getString("tipo_reparacion");
+                    reparacion[3] = rs.getString("precio_reparacion");
+                    reparacion[4] = rs.getString("fecha_reparacion");
+                    tabla.addRow(reparacion);
+                }
+                jTabla.setModel(tabla);
+            }
+
+            //Arreglar sede
+            if (selectTabla.equals("clientes")) {
+                Object[] cliente = new Object[3];
+                DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"Nombre", "Apellido"});
+                while (rs.next()) {
+                    cliente[0] = rs.getString("nombre_cliente");
+                    cliente[1] = rs.getString("apellido_cliente");
+                    tabla.addRow(cliente);
+                }
+                jTabla.setModel(tabla);
+            }
+
+            //Arreglar sede
+            if (selectTabla.equals("automovilMatriculas")) {
+                Object[] matricula = new Object[1];
+                DefaultTableModel tabla = new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{"Matricula"});
+                while (rs.next()) {
+                    matricula[0] = rs.getString("matricula");
+                    tabla.addRow(matricula);
+                }
+                jTabla.setModel(tabla);
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al cargar datos de empleados: " + e.getMessage(),
+            JOptionPane.showMessageDialog(null, "Error al cargar datos de: " + selectTabla + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    //Presentar los datos en los campos
+    public void datosCampos(String query, String tabla, JTextField uno, JTextField dos, JTextField tres, JTextField cuatro, JTextField cinco, JTextField seis, JTextField siete) {
+        try {
+            Conexion con = new Conexion();
+            conectar = con.conectar();
+            st = conectar.createStatement();
+            rs = st.executeQuery(query);
+
+            if (tabla.equals("taller")) {
+                while (rs.next()) {
+                    if (uno != null) {
+                        uno.setText("" + rs.getInt("Id_taller"));
+                    }
+                    if (dos != null) {
+                        dos.setText(rs.getString("nombre_taller"));
+                    }
+                    if (tres != null) {
+                        tres.setText(rs.getString("telefono_taller"));
+                    }
+                    if (cuatro != null) {
+                        cuatro.setText("" + rs.getString("ciudad"));
+                    }
+                    if (cinco != null) {
+                        cinco.setText("" + rs.getString("id_director"));
+                    }
+                    if (seis != null) {
+                        seis.setText("" + rs.getString("nombre_empleado"));
+                    }
+                    if (siete != null) {
+                        siete.setText("" + rs.getString("apellido_empleado"));
+                    }
+                }
+            }
+
+            if (tabla.equals("empleados")) {
+                while (rs.next()) {
+                    if (uno != null) {
+                        uno.setText("" + rs.getInt("idEmpleado"));
+                    }
+                    if (dos != null) {
+                        dos.setText(rs.getString("cedula_empleado"));
+                    }
+                    if (tres != null) {
+                        tres.setText(rs.getString("nombre_empleado"));
+                    }
+                    if (cuatro != null) {
+                        cuatro.setText("" + rs.getString("apellido_empleado"));
+                    }
+                    if (cinco != null) {
+                        cinco.setText("" + rs.getString("fechaNac_empleado"));
+                    }
+                    if (seis != null) {
+                        seis.setText("" + rs.getString("fechaInicio_Labores"));
+                    }
+                    if (siete != null) {
+                        siete.setText("" + rs.getString("sueldo"));
+                    }
+                }
+            }
+
+            if (tabla.equals("clientes")) {
+                while (rs.next()) {
+                    if (uno != null) {
+                        uno.setText("" + rs.getString("cedula_cliente"));
+                    }
+                    if (dos != null) {
+                        dos.setText(rs.getString("nombre_cliente"));
+                    }
+                    if (tres != null) {
+                        tres.setText(rs.getString("apellido_cliente"));
+                    }
+                    if (cuatro != null) {
+                        cuatro.setText(rs.getString("ciudad_cliente"));
+                    }
+                    if (cinco != null) {
+                        if (rs.getInt("Id_taller") == 1) {
+                            cinco.setText("Quito");
+                        } else {
+                            cinco.setText("Guayaquil");
+                        }
+                    }
+                }
+            }
+
+            if (tabla.equals("automovilMatriculas")) {
+                while (rs.next()) {
+                    if (uno != null) {
+                        uno.setText("" + rs.getString("matricula"));
+                    }
+                    if (dos != null) {
+                        dos.setText(rs.getString("fecha_compra"));
+                    }
+                    if (tres != null) {
+                        tres.setText(rs.getString("marca"));
+                    }
+                    if (cuatro != null) {
+                        cuatro.setText(rs.getString("tipo_vehiculo"));
+                    }
+                    if (cinco != null) {
+                        if (rs.getInt("Id_taller") == 1) {
+                            cinco.setText("Quito");
+                        } else {
+                            cinco.setText("Guayaquil");
+                        }
+                    }
+                    if (seis != null) {
+                        seis.setText(rs.getString("nombre_cliente"));
+                    }
+                    if (siete != null) {
+                        siete.setText(rs.getString("apellido_cliente"));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    //Presentar los datos en los campos especiales
+    public void datosCamposEspeciales(String query, String tabla, JSpinner ocho, JTextArea nueve) {
+        try {
+            Conexion con = new Conexion();
+            conectar = con.conectar();
+            st = conectar.createStatement();
+            rs = st.executeQuery(query);
+
+            ArrayList<String> valores = new ArrayList<>();
+
+            while (rs.next()) {
+                if (tabla.equals("empleados")) {
+                    int numeroEmpleado = rs.getInt("telefono_empleado");
+                    valores.add(String.valueOf(numeroEmpleado));
+                    ocho.setModel(new SpinnerListModel(valores.toArray(new String[0])));
+                }
+                if (tabla.equals("reparaciones")) {
+                    nueve.setText(rs.getString("observaciones"));
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public int verificarSede(String query) {
+        try {
+            Conexion con = new Conexion();
+            conectar = con.conectar();
+            st = conectar.createStatement();
+            rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                return rs.getInt("Conteo");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return 0;
     }
 }
