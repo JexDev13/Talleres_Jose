@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
@@ -12,7 +13,6 @@ public class Empleados extends javax.swing.JFrame {
     Conexion conexion = new Conexion();
     String SQL = "select * from empleado_quito";
     String tabla = "empleados";
-    
 
     public Empleados(String sede) {
         initComponents();
@@ -20,6 +20,14 @@ public class Empleados extends javax.swing.JFrame {
         this.jLSede.setText("Empleados de " + sede);
         this.sede = sede;
         conexion.cargarDatos(this.SQL, jTable1, tabla);
+        this.uno.setEditable(false);
+        if(this.uno.getText().isBlank())
+        {
+            this.uno.setEditable(true);
+        }else
+        {
+            this.uno.setEditable(false);
+        }
     }
 
     /**
@@ -113,8 +121,18 @@ public class Empleados extends javax.swing.JFrame {
         });
 
         jBEliminar.setText("Eliminar empleado");
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarActionPerformed(evt);
+            }
+        });
 
         jBActualizar.setText("Actualizar empleado");
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
 
         jTFBusqueda.setBorder(null);
         jTFBusqueda.setOpaque(true);
@@ -303,6 +321,7 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_jBRegresaerActionPerformed
 
     private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNuevoActionPerformed
+        
         String id = this.uno.getText();
         String nombre = this.tres.getText();
         String fechaNa = this.cinco.getText();
@@ -313,14 +332,12 @@ public class Empleados extends javax.swing.JFrame {
         String telefono = String.valueOf(this.ocho.getValue());
         this.SQL = "SELECT COUNT(*) as Conteo FROM empleado_quito where idEmpleado like '%" + id + "%';";
         if (conexion.verificarConteo(SQL) == 0) {
-            this.SQL="INSERT INTO empleado_quito values(?,?,?,?,?,?,?,?)";
-            if(conexion.insertarTabla(SQL, tabla, id, cedula, nombre, apellido, fechaNa, iniLab, sueldo, null))
-            {
-                this.SQL="INSERT INTO telefonoEmp_quito values(?,?)";
-                if(conexion.insertarTabla(SQL, "empleadosTelf", id, null, null, null, null, null, null, telefono))
-                {
+            this.SQL = "INSERT INTO empleado_quito values(?,?,?,?,?,?,?,?)";
+            if (conexion.insertarTabla(SQL, tabla, id, cedula, nombre, apellido, fechaNa, iniLab, sueldo, null)) {
+                this.SQL = "INSERT INTO telefonoEmp_quito values(?,?)";
+                if (conexion.insertarTabla(SQL, "empleadosTelf", id, null, null, null, null, null, null, telefono)) {
                     JOptionPane.showMessageDialog(null, "El empleado registrado exitosamente",
-                    "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+                            "Ingreso", JOptionPane.INFORMATION_MESSAGE);
                     this.setVisible(false);
                     recargar();
                 }
@@ -342,13 +359,49 @@ public class Empleados extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTFBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyReleased
-        String Busqueda=this.jTFBusqueda.getText();
-        this.SQL="select * from empleado_quito where CONCAT(nombre_empleado, ' ', apellido_empleado) like '%" + Busqueda+ "%'";
-        conexion.cargarDatos(SQL,jTable1,tabla);
+        String Busqueda = this.jTFBusqueda.getText();
+        this.SQL = "select * from empleado_quito where CONCAT(nombre_empleado, ' ', apellido_empleado) like '%" + Busqueda + "%'";
+        conexion.cargarDatos(SQL, jTable1, tabla);
     }//GEN-LAST:event_jTFBusquedaKeyReleased
 
-    public void recargar()
-    {
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
+        String id = this.uno.getText();
+        int seleccion = JOptionPane.showConfirmDialog(null, """
+                                                            \u00bfDesea eliminar el elemento?
+                                                                 -Esta accion sera permanente e irreversible""", "Borrar empleado", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (seleccion == 0) {
+            this.SQL = "DELETE from empleado_quito Where idEmpleado = " + id;
+            if (conexion.actualizarEliminarDatos(SQL) == true) {
+                recargar();
+            }
+        }
+    }//GEN-LAST:event_jBEliminarActionPerformed
+
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        String id = this.uno.getText();
+        String nombre = this.tres.getText();
+        String fechaNa = this.cinco.getText();
+        String sueldo = this.siete.getText();
+        String cedula = this.dos.getText();
+        String apellido = this.cuatro.getText();
+        String iniLab = this.seis.getText();
+        String telefono = String.valueOf(this.ocho.getValue());
+        ArrayList<String> atributosActualizar = new ArrayList<>();
+        atributosActualizar.add("idEmpleado = '" + id + "'");
+        atributosActualizar.add("cedula_empleado = '" + cedula + "'");
+        atributosActualizar.add("nombre_empleado = '" + nombre + "'");
+        atributosActualizar.add("apellido_empleado = '" + apellido + "'");
+        atributosActualizar.add("fechaNac_empleado = '" + fechaNa + "'");
+        atributosActualizar.add("fechaInicio_Labores = '" + iniLab + "'");
+        atributosActualizar.add("sueldo = '" + sueldo + "'");
+        String parametroCambio = conexion.prepararQuery(atributosActualizar);
+        this.SQL = "UPDATE empleado_quito SET " + parametroCambio + " WHERE idEmpleado = '" + id + "'";
+        if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+            recargar();
+        }
+    }//GEN-LAST:event_jBActualizarActionPerformed
+
+    public void recargar() {
         this.setVisible(false);
         Empleados emp = new Empleados(sede);
         emp.setVisible(true);

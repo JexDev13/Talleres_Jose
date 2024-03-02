@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,6 +14,7 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
     Conexion conexion = new Conexion();
     String SQL;
     String tabla;
+    String OldMatricula;
     
     /**
      * Creates new form AutomovilMatriculas
@@ -123,8 +125,18 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         });
 
         jBEliminar.setText("Eliminar automovil");
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarActionPerformed(evt);
+            }
+        });
 
         jBActualizar.setText("Actualizar automovil");
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
 
         jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -323,12 +335,13 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
             this.SQL = "select * from automovilDatos_quito where matricula like  '%" + dato + "%'";
             conexion.datosCampos(this.SQL, tabla, uno, dos, tres, cuatro, cinco, seis, siete);
         }
+        this.OldMatricula = uno.getText();
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTFBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyReleased
-        String Busqueda=this.jTFBusqueda.getText();
-        this.SQL="select * from automovilMatricula where matricula like '%" + Busqueda+ "%'";
-        conexion.cargarDatos(SQL,jTable1,tabla);
+        String Busqueda = this.jTFBusqueda.getText();
+        this.SQL = "select * from automovilMatricula where matricula like '%" + Busqueda + "%'";
+        conexion.cargarDatos(SQL, jTable1, tabla);
     }//GEN-LAST:event_jTFBusquedaKeyReleased
 
     private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNuevoActionPerformed
@@ -336,7 +349,6 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         String fechaCompra = this.dos.getText();
         String marca = this.tres.getText();
         String tipo = this.cuatro.getText();
-        String sede = this.cinco.getText();
         String nombre = this.seis.getText();
         String apellido = this.siete.getText();
 
@@ -357,12 +369,62 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBNuevoActionPerformed
 
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
+        String matricula = this.uno.getText();
+        int seleccion = JOptionPane.showConfirmDialog(null, """
+                                                            \u00bfDesea eliminar el elemento?
+                                                                 -Esta accion sera permanente e irreversible""", "Borrar automovil", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (seleccion == 0) {
+            this.SQL = "DELETE FROM reparacion WHERE matricula LIKE '%" + matricula + "%';";
+            boolean elim1 = conexion.actualizarEliminarDatos(SQL);
+            String SQL2 = "DELETE FROM automovilDatos_quito WHERE matricula LIKE '%" + matricula + "%';";
+            boolean elim2 = conexion.actualizarEliminarDatos(SQL2);
+            String SQL3 = "DELETE FROM automovilMatricula WHERE matricula LIKE '%" + matricula + "%';";
+            boolean elim3 = conexion.actualizarEliminarDatos(SQL3);
+           
+            if ((elim1 == true && elim2 == true && elim3 == true)||(elim1 == false && elim2 == true && elim3 == true)) {
+                recargar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error",
+                        "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jBEliminarActionPerformed
+
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        String matricula = this.uno.getText();
+        String fechaCompra = this.dos.getText();
+        String marca = this.tres.getText();
+        String tipo = this.cuatro.getText();
+        String nombre = this.seis.getText();
+        String apellido = this.siete.getText();
+        
+        ArrayList<String> atributosActualizar = new ArrayList<>();
+        atributosActualizar.add("matricula = '" + matricula + "'");
+        atributosActualizar.add("fecha_compra = '" + fechaCompra + "'");
+        atributosActualizar.add("marca = '" + marca + "'");
+        atributosActualizar.add("tipo_vehiculo = '" + tipo + "'");
+        atributosActualizar.add("nombre_cliente = '" + nombre + "'");
+        atributosActualizar.add("apellido_cliente = '" + apellido + "'");
+        
+        String parametroCambio = conexion.prepararQuery(atributosActualizar);
+        this.SQL = "UPDATE automovilDatos_quito SET " + parametroCambio + " WHERE matricula = '" + OldMatricula + "';";
+        System.out.println(SQL);
+        if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+            this.SQL = "UPDATE automovilMatricula SET matricula = '" + matricula + "' WHERE matricula = '" + OldMatricula + "';";
+            System.out.println(SQL);
+            if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+                recargar();
+            }
+        }
+    }//GEN-LAST:event_jBActualizarActionPerformed
+
     public void recargar() {
         this.setVisible(false);
         AutomovilMatriculas auto = new AutomovilMatriculas(sede);
         auto.setVisible(true);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cinco;
     private javax.swing.JTextField cuatro;

@@ -12,6 +12,12 @@ public class Reparaciones extends javax.swing.JFrame {
     Conexion conexion = new Conexion();
     String SQL;
     String tabla;
+    String id;
+    String mat;
+    String tip;
+    String pre;
+    String fe; 
+    String ob;
 
     public Reparaciones(String sede) {
         initComponents();
@@ -219,13 +225,14 @@ public class Reparaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jBRegresaerActionPerformed
 
     private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNuevoActionPerformed
-        InfoReparacion rep = new InfoReparacion(sede, "Registrar");
+        InfoReparacion rep = new InfoReparacion(sede, "Registrar", null, null, null, null, null, null);
         rep.setVisible(true);
     }//GEN-LAST:event_jBNuevoActionPerformed
 
     private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
-        InfoReparacion rep = new InfoReparacion(sede, "Actualizar");
+        InfoReparacion rep = new InfoReparacion(sede, "Actualizar", id, pre, ob, tip, fe, mat);
         rep.setVisible(true);
+
     }//GEN-LAST:event_jBActualizarActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -234,18 +241,30 @@ public class Reparaciones extends javax.swing.JFrame {
         String dato = (reparacion != null) ? reparacion.toString() : "";
         this.SQL = "select * from reparacion where id_reparacion like  '%" + dato + "%'";
         conexion.datosCamposEspeciales(this.SQL, tabla, null, nueve);
+        id = this.jTable1.getValueAt(fila, 0).toString();
+        mat = this.jTable1.getValueAt(fila, 1).toString();
+        tip = this.jTable1.getValueAt(fila, 2).toString();
+        pre = this.jTable1.getValueAt(fila, 3).toString();
+        fe = this.jTable1.getValueAt(fila, 4).toString();
+        ob = this.nueve.getText();
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTFBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyReleased
         String parametroBusqueda = "matricula";
-        String Busqueda=this.jTFBusqueda.getText();
-        switch(this.jComboBox1.getSelectedIndex()){
-            case 0 -> parametroBusqueda="matricula";
-            case 1 -> parametroBusqueda="fecha_reparacion";
+        String Busqueda = this.jTFBusqueda.getText();
+        switch (this.jComboBox1.getSelectedIndex()) {
+            case 0 ->
+                parametroBusqueda = "matricula";
+            case 1 ->
+                parametroBusqueda = "fecha_reparacion";
         }
-        this.SQL="SELECT * FROM reparacion WHERE " + parametroBusqueda + " like '%" + Busqueda+ "%'";
-        conexion.cargarDatos(SQL,jTable1,tabla);
+        this.SQL = "SELECT * FROM reparacion WHERE " + parametroBusqueda + " like '%" + Busqueda + "%'";
+        conexion.cargarDatos(SQL, jTable1, tabla);
     }//GEN-LAST:event_jTFBusquedaKeyReleased
+
+    public void mostrarDatos() {
+
+    }
 
     /**
      * @param args the command line arguments

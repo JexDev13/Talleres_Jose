@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -298,14 +299,14 @@ public class Conexion {
         }
         return 0;
     }
-    
+
     //Insertar en tablas.
     public boolean insertarTabla(String SQL, String tabla, String uno, String dos, String tres, String cuatro, String cinco, String seis, String siete, String ocho) {
         try {
             Conexion con = new Conexion();
             conectar = con.conectar();
             PreparedStatement pps = conectar.prepareStatement(SQL);
-            
+
             if (tabla.equals("empleados")) {
                 pps.setInt(1, Integer.parseInt(uno));
                 pps.setString(2, dos);
@@ -318,25 +319,22 @@ public class Conexion {
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("empleadosTelf"))
-            {
+
+            if (tabla.equals("empleadosTelf")) {
                 pps.setInt(1, Integer.parseInt(uno));
                 pps.setString(2, ocho);
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("clienteNombres"))
-            {
+
+            if (tabla.equals("clienteNombres")) {
                 pps.setString(1, uno);
                 pps.setString(2, dos);
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("clienteDatos_quito"))
-            {
+
+            if (tabla.equals("clienteDatos_quito")) {
                 pps.setString(1, uno);
                 pps.setString(2, dos);
                 pps.setString(3, tres);
@@ -345,16 +343,14 @@ public class Conexion {
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("automovilMatricula"))
-            {
+
+            if (tabla.equals("automovilMatricula")) {
                 pps.setString(1, uno);
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("automovilDatos_quito"))
-            {
+
+            if (tabla.equals("automovilDatos_quito")) {
                 pps.setString(1, uno);
                 pps.setString(2, dos);
                 pps.setString(3, tres);
@@ -365,9 +361,8 @@ public class Conexion {
                 pps.executeUpdate();
                 return true;
             }
-            
-            if (tabla.equals("reparacion"))
-            {
+
+            if (tabla.equals("reparacion")) {
                 pps.setInt(1, Integer.parseInt(uno));
                 pps.setDouble(2, Double.parseDouble(dos));
                 pps.setString(3, tres);
@@ -375,6 +370,36 @@ public class Conexion {
                 pps.setString(5, cinco);
                 pps.setString(6, seis);
                 pps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return false;
+    }
+
+    //Metodo para preparar el query
+    public String prepararQuery(ArrayList<String> atributosActualizar) {
+        String parametroCambio = "";
+        Iterator i = atributosActualizar.iterator();
+        while (i.hasNext()) {
+            parametroCambio += i.next() + ",";
+        }
+        parametroCambio = parametroCambio.substring(0, parametroCambio.length() - 1);
+        return parametroCambio;
+    }
+
+    //Metodo para actualizar o eliminar datos de tablas
+    public boolean actualizarEliminarDatos(String SQL) {
+        try {
+            int pos;
+            Conexion con = new Conexion();
+            conectar = con.conectar();
+            PreparedStatement pps = conectar.prepareStatement(SQL);
+            pos = pps.executeUpdate();
+            if (pos > 0) {
                 return true;
             }
         } catch (SQLException e) {

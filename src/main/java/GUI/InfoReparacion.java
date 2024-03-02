@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
@@ -17,14 +18,36 @@ public class InfoReparacion extends javax.swing.JFrame {
     String sede;
     String SQL;
     String tabla;
+    String idR;
+    String prec;
+    String obs;
+    String tip;
+    String fech;
+    String matr;
 
-    public InfoReparacion(String sede, String info) {
+    public InfoReparacion(String sede, String info, String id, String precio, String observaciones, String tipo, String fecha, String matricula) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.info = info;
         this.sede = sede;
         this.jLabel1.setText("  " + info + " reparación");
+        
         this.jTextField1.setText(sede);
+        this.idR = id;
+        this.matr = matricula;
+        this.tip = tipo;
+        this.prec = precio;
+        this.fech = fecha;
+        this.obs = observaciones;
+        
+        if (info.equalsIgnoreCase("Actualizar")) {
+            this.uno.setText(id);
+            this.dos.setText(precio);
+            this.tres.setText(tipo);
+            this.cuatro.setText(fecha);
+            this.cinco.setText(matricula);
+            this.seis.setText(observaciones);
+        }
     }
 
     /**
@@ -219,7 +242,7 @@ public class InfoReparacion extends javax.swing.JFrame {
         String matricula = this.cinco.getText();
 
         switch (info) {
-            case ("Registrar") ->  {
+            case ("Registrar") -> {
                 this.SQL = "SELECT COUNT(*) as Conteo FROM reparacion where id_reparacion like '%" + id + "%';";
                 if (conexion.verificarConteo(SQL) == 0) {
                     this.SQL = "INSERT INTO reparacion (id_reparacion, precio_reparacion, observaciones, tipo_reparacion, fecha_reparacion, matricula, rowguid) values(?, ?, ?, ?, ?, ?, NEWID())";
@@ -234,8 +257,20 @@ public class InfoReparacion extends javax.swing.JFrame {
                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            case ("Actualizar") ->  {
-                
+            case ("Actualizar") -> {
+                ArrayList<String> atributosActualizar = new ArrayList<>();
+                atributosActualizar.add("id_reparacion = '" + id + "'");
+                atributosActualizar.add("precio_reparacion = '" + precio + "'");
+                atributosActualizar.add("observaciones = '" + observaciones + "'");
+                atributosActualizar.add("tipo_reparacion = '" + tipo + "'");
+                atributosActualizar.add("fecha_reparacion = '" + fecha + "'");
+                atributosActualizar.add("matricula = '" + matricula + "'");
+                String parametroCambio = conexion.prepararQuery(atributosActualizar);
+                this.SQL = "UPDATE reparacion SET " + parametroCambio + " WHERE id_reparacion like '" + id + "'";
+                System.out.println(SQL);
+                if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+                    recargar();
+                }
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed

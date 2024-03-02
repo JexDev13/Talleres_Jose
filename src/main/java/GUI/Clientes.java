@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
@@ -13,6 +14,8 @@ public class Clientes extends javax.swing.JFrame {
     Conexion conexion = new Conexion();
     String SQL;
     String tabla;
+    String OldApellido;
+    String OldNombre;
 
     public Clientes(String sede) {
         initComponents();
@@ -128,8 +131,18 @@ public class Clientes extends javax.swing.JFrame {
         });
 
         jBEliminar.setText("Eliminar cliente");
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarActionPerformed(evt);
+            }
+        });
 
         jBActualizar.setText("Actualizar cliente");
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
 
         jTANotas.setEditable(false);
         jTANotas.setBackground(new java.awt.Color(255, 255, 255));
@@ -298,6 +311,8 @@ public class Clientes extends javax.swing.JFrame {
             this.SQL = "select * from clienteDatos_quito where CONCAT(nombre_cliente, ' ', apellido_cliente) like  '%" + dato + "%'";
             conexion.datosCampos(this.SQL, tabla, uno, dos, tres, cuatro, cinco, null, null);
         }
+        this.OldNombre = dos.getText();
+        this.OldApellido = tres.getText();
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTFBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyReleased
@@ -328,6 +343,48 @@ public class Clientes extends javax.swing.JFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jBNuevoActionPerformed
+
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
+        String nombre = this.dos.getText();
+        String apellido = this.tres.getText();
+        int seleccion = JOptionPane.showConfirmDialog(null, """
+                                                            \u00bfDesea eliminar el elemento?
+                                                                 -Esta accion sera permanente e irreversible""", "Borrar cliente", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (seleccion == 0) {
+            this.SQL = "DELETE FROM clienteDatos_quito WHERE nombre_cliente LIKE '%" + nombre + "%' AND apellido_cliente LIKE '%" + apellido + "%'";
+            if (conexion.actualizarEliminarDatos(SQL) == true) {
+                this.SQL = "DELETE FROM clienteNombres WHERE nombre_cliente LIKE '%" + nombre + "%' AND apellido_cliente LIKE '%" + apellido + "%'";
+                if (conexion.actualizarEliminarDatos(SQL) == true) {
+                    recargar();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El cliente no esta registrado en Quito",
+                        "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jBEliminarActionPerformed
+
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        String cedula = this.uno.getText();
+        String nombre = this.dos.getText();
+        String apellido = this.tres.getText();
+        String ciudad = this.cuatro.getText();
+        ArrayList<String> atributosActualizar = new ArrayList<>();
+        atributosActualizar.add("cedula_cliente = '" + cedula + "'");
+        atributosActualizar.add("nombre_cliente = '" + nombre + "'");
+        atributosActualizar.add("apellido_cliente = '" + apellido + "'");
+        atributosActualizar.add("ciudad_cliente = '" + ciudad + "'");
+        String parametroCambio = conexion.prepararQuery(atributosActualizar);
+        this.SQL = "UPDATE clienteDatos_quito SET " + parametroCambio + " WHERE nombre_cliente = '" + OldNombre + "' AND apellido_cliente = '" + OldApellido + "';";
+        System.out.println(SQL);
+        if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+            this.SQL = "UPDATE clienteNombres SET nombre_cliente = '" + nombre + "', apellido_cliente = '" + apellido + "' WHERE nombre_cliente = '" + OldNombre + "' AND apellido_cliente = '" + OldApellido + "';";
+            System.out.println(SQL);
+            if (conexion.actualizarEliminarDatos(this.SQL) == true) {
+                recargar();
+            }
+        }
+    }//GEN-LAST:event_jBActualizarActionPerformed
 
     public void recargar() {
         this.setVisible(false);
