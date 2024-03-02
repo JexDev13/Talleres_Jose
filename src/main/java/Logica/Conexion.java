@@ -2,10 +2,13 @@ package Logica;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
@@ -277,7 +280,8 @@ public class Conexion {
         }
     }
 
-    public int verificarSede(String query) {
+    //Verificar conteos(duplicados o sedes)
+    public int verificarConteo(String query) {
         try {
             Conexion con = new Conexion();
             conectar = con.conectar();
@@ -293,5 +297,91 @@ public class Conexion {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
         return 0;
+    }
+    
+    //Insertar en tablas.
+    public boolean insertarTabla(String SQL, String tabla, String uno, String dos, String tres, String cuatro, String cinco, String seis, String siete, String ocho) {
+        try {
+            Conexion con = new Conexion();
+            conectar = con.conectar();
+            PreparedStatement pps = conectar.prepareStatement(SQL);
+            
+            if (tabla.equals("empleados")) {
+                pps.setInt(1, Integer.parseInt(uno));
+                pps.setString(2, dos);
+                pps.setString(3, tres);
+                pps.setString(4, cuatro);
+                pps.setString(5, cinco);
+                pps.setString(6, seis);
+                pps.setDouble(7, Double.parseDouble(siete));
+                pps.setInt(8, 1);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("empleadosTelf"))
+            {
+                pps.setInt(1, Integer.parseInt(uno));
+                pps.setString(2, ocho);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("clienteNombres"))
+            {
+                pps.setString(1, uno);
+                pps.setString(2, dos);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("clienteDatos_quito"))
+            {
+                pps.setString(1, uno);
+                pps.setString(2, dos);
+                pps.setString(3, tres);
+                pps.setString(4, cuatro);
+                pps.setInt(5, 1);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("automovilMatricula"))
+            {
+                pps.setString(1, uno);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("automovilDatos_quito"))
+            {
+                pps.setString(1, uno);
+                pps.setString(2, dos);
+                pps.setString(3, tres);
+                pps.setString(4, cuatro);
+                pps.setInt(5, 1);
+                pps.setString(6, seis);
+                pps.setString(7, siete);
+                pps.executeUpdate();
+                return true;
+            }
+            
+            if (tabla.equals("reparacion"))
+            {
+                pps.setInt(1, Integer.parseInt(uno));
+                pps.setDouble(2, Double.parseDouble(dos));
+                pps.setString(3, tres);
+                pps.setString(4, cuatro);
+                pps.setString(5, cinco);
+                pps.setString(6, seis);
+                pps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return false;
     }
 }

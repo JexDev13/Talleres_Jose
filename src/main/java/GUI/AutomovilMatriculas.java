@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -115,6 +116,11 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         });
 
         jBNuevo.setText("Registrar automovil");
+        jBNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBNuevoActionPerformed(evt);
+            }
+        });
 
         jBEliminar.setText("Eliminar automovil");
 
@@ -302,7 +308,7 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         Object matricula = this.jTable1.getValueAt(fila, 0);
         String dato = (matricula != null) ? matricula.toString() : "";
         this.SQL = "SELECT COUNT(*) as Conteo FROM (SELECT * FROM automovilDatos_quito WHERE matricula LIKE '%" + dato + "%') AS Matricula;";
-        if (conexion.verificarSede(SQL) == 0) {
+        if (conexion.verificarConteo(SQL) == 0) {
             uno.setText(" ");
             dos.setText(" ");
             tres.setText(" ");
@@ -325,6 +331,38 @@ public class AutomovilMatriculas extends javax.swing.JFrame {
         conexion.cargarDatos(SQL,jTable1,tabla);
     }//GEN-LAST:event_jTFBusquedaKeyReleased
 
+    private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNuevoActionPerformed
+        String matricula = this.uno.getText();
+        String fechaCompra = this.dos.getText();
+        String marca = this.tres.getText();
+        String tipo = this.cuatro.getText();
+        String sede = this.cinco.getText();
+        String nombre = this.seis.getText();
+        String apellido = this.siete.getText();
+
+        this.SQL = "SELECT COUNT(*) as Conteo FROM automovilMatricula where matricula like '%" + matricula + "%';";
+        if (conexion.verificarConteo(SQL) == 0) {
+            this.SQL = "INSERT INTO automovilMatricula (matricula, rowguid) values(?, NEWID())";
+            if (conexion.insertarTabla(SQL, "automovilMatricula", matricula, null, null, null, null, null, null, null)) {
+                this.SQL = "INSERT INTO automovilDatos_quito values(?,?,?,?,?,?,?)";
+                if (conexion.insertarTabla(SQL, "automovilDatos_quito", matricula, fechaCompra, marca, tipo, null, nombre, apellido, null)) {
+                    JOptionPane.showMessageDialog(null, "El automovil fue registrado exitosamente",
+                            "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+                    recargar();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: El automovil ya se encuentra registrado",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jBNuevoActionPerformed
+
+    public void recargar() {
+        this.setVisible(false);
+        AutomovilMatriculas auto = new AutomovilMatriculas(sede);
+        auto.setVisible(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cinco;
     private javax.swing.JTextField cuatro;

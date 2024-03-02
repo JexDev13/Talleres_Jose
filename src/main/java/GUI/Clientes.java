@@ -1,6 +1,7 @@
 package GUI;
 
 import Logica.Conexion;
+import javax.swing.JOptionPane;
 
 /*
  *
@@ -120,6 +121,11 @@ public class Clientes extends javax.swing.JFrame {
         });
 
         jBNuevo.setText("Registrar cliente");
+        jBNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBNuevoActionPerformed(evt);
+            }
+        });
 
         jBEliminar.setText("Eliminar cliente");
 
@@ -279,7 +285,7 @@ public class Clientes extends javax.swing.JFrame {
         Object apellido = this.jTable1.getValueAt(fila, 1);
         String dato = (nombre != null && apellido != null) ? nombre.toString() + " " + apellido.toString() : "";
         this.SQL = "SELECT COUNT(*) as Conteo FROM (SELECT * FROM clienteDatos_quito WHERE CONCAT(nombre_cliente, ' ', apellido_cliente) LIKE '%" + dato + "%') AS Nombre;";
-        if (conexion.verificarSede(SQL) == 0) {
+        if (conexion.verificarConteo(SQL) == 0) {
             uno.setText(" ");
             dos.setText(" ");
             tres.setText(" ");
@@ -295,10 +301,40 @@ public class Clientes extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTFBusquedaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTFBusquedaKeyReleased
-        String Busqueda=this.jTFBusqueda.getText();
-        this.SQL="select * from clienteNombres where CONCAT(nombre_cliente, ' ', apellido_cliente) like '%" + Busqueda+ "%'";
-        conexion.cargarDatos(SQL,jTable1,tabla);
+        String Busqueda = this.jTFBusqueda.getText();
+        this.SQL = "select * from clienteNombres where CONCAT(nombre_cliente, ' ', apellido_cliente) like '%" + Busqueda + "%'";
+        conexion.cargarDatos(SQL, jTable1, tabla);
     }//GEN-LAST:event_jTFBusquedaKeyReleased
+
+    private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBNuevoActionPerformed
+        String cedula = this.uno.getText();
+        String nombre = this.dos.getText();
+        String apellido = this.tres.getText();
+        String ciudad = this.cuatro.getText();
+
+        this.SQL = "SELECT COUNT(*) as Conteo FROM clienteNombres where CONCAT(nombre_cliente, ' ', apellido_cliente) like '%" + nombre + " " + apellido + "%';";
+        if (conexion.verificarConteo(SQL) == 0) {
+            this.SQL = "INSERT INTO clienteNombres values(?,?)";
+            if (conexion.insertarTabla(SQL, "clienteNombres", nombre, apellido, null, null, null, null, null, null)) {
+                this.SQL = "INSERT INTO clienteDatos_quito values(?,?,?,?,?)";
+                if (conexion.insertarTabla(SQL, "clienteDatos_quito", cedula, nombre, apellido, ciudad, null, null, null, null)) {
+                    JOptionPane.showMessageDialog(null, "El cliente fue registrado exitosamente",
+                            "Ingreso", JOptionPane.INFORMATION_MESSAGE);
+                    recargar();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al cargar datos: El cliente ya se encuentra registrado",
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jBNuevoActionPerformed
+
+    public void recargar() {
+        this.setVisible(false);
+        Clientes cli = new Clientes(sede);
+        cli.setVisible(true);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField cinco;

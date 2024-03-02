@@ -99,23 +99,23 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLNombre1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="txtFechaNacEmpleado" min="-2" pref="205" max="-2" attributes="0"/>
+                              <Component id="cinco" min="-2" pref="205" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jLNombre" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="txtNombreEmpleado" min="-2" pref="205" max="-2" attributes="0"/>
+                              <Component id="tres" min="-2" pref="205" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLNombre2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="txtSueldoEmpleado" min="-2" pref="205" max="-2" attributes="0"/>
+                              <Component id="siete" min="-2" pref="205" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="jLID" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtIDEmpleado" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="uno" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
@@ -123,7 +123,7 @@
                       <Group type="102" attributes="0">
                           <Component id="jLCedula" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="38" max="32767" attributes="0"/>
-                          <Component id="txtCedulaEmpleado" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="dos" min="-2" pref="205" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -135,9 +135,9 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jSTelefono" max="32767" attributes="0"/>
-                              <Component id="txtFechaIniEmpleado" max="32767" attributes="0"/>
-                              <Component id="txtApellidoEmpleado" pref="204" max="32767" attributes="0"/>
+                              <Component id="ocho" max="32767" attributes="0"/>
+                              <Component id="seis" max="32767" attributes="0"/>
+                              <Component id="cuatro" pref="204" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -183,29 +183,29 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLID" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtIDEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="uno" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLCedula" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtCedulaEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="dos" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNombreEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tres" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLNombre" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLApellido" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtApellidoEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cuatro" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLNombre1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFechaNacEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cinco" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLApellido1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFechaIniEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="seis" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLNombre2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtSueldoEmpleado" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jSTelefono" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="siete" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ocho" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLApellido2" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="23" max="32767" attributes="0"/>
@@ -359,36 +359,36 @@
             <Property name="text" type="java.lang.String" value="Apellido:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtIDEmpleado">
+        <Component class="javax.swing.JTextField" name="uno">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtCedulaEmpleado">
+        <Component class="javax.swing.JTextField" name="dos">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNombreEmpleado">
+        <Component class="javax.swing.JTextField" name="tres">
         </Component>
-        <Component class="javax.swing.JTextField" name="txtApellidoEmpleado">
+        <Component class="javax.swing.JTextField" name="cuatro">
         </Component>
         <Component class="javax.swing.JLabel" name="jLNombre1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Fecha nacimiento:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFechaNacEmpleado">
+        <Component class="javax.swing.JTextField" name="cinco">
         </Component>
         <Component class="javax.swing.JLabel" name="jLApellido1">
           <Properties>
             <Property name="text" type="java.lang.String" value="Inicio labores:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFechaIniEmpleado">
+        <Component class="javax.swing.JTextField" name="seis">
         </Component>
         <Component class="javax.swing.JLabel" name="jLNombre2">
           <Properties>
             <Property name="text" type="java.lang.String" value="Sueldo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtSueldoEmpleado">
+        <Component class="javax.swing.JTextField" name="siete">
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSTelefono">
+        <Component class="javax.swing.JSpinner" name="ocho">
           <Properties>
             <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
               <SpinnerModel type="list">
